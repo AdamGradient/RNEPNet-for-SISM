@@ -40,3 +40,17 @@ Choose weights and the target dataset directly:
 ```bash
 python evaluate.py --checkpoint weights/us3d.pth --dataset whu --data-root /path/to/WHU
 ```
+
+## Real-time model
+
+Download `rnepnet-realtime-weights-v1.0.0.tar.gz` from Baidu Netdisk and extract to:
+
+```text
+weights/us3d_realtime.pth
+weights/whu_realtime.pth
+```
+
+```bash
+bash scripts/evaluate_us3d_realtime.sh /path/to/US3D
+bash scripts/evaluate_whu_realtime.sh /path/to/WHU
+```

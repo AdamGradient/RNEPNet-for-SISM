@@ -98,14 +98,20 @@ def main():
     parser.add_argument("--iterations", type=int, default=32)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--max-samples", type=int, help="Evaluate only the first N pairs (partial result)")
+    parser.add_argument("--realtime", action="store_true", help="Use the US3D/WHU real-time model")
     args = parser.parse_args()
+    if args.realtime:
+        args.iterations = 1
     rows = manifest_pairs(args.pairs, args.data_root) if args.pairs else native_pairs(args.data_root, args.dataset)
     if args.max_samples is not None:
         rows = rows[:args.max_samples]
     if args.output_dir is not None:
         args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    import rnep_runtime
+    if args.realtime:
+        import rnep_realtime_runtime as rnep_runtime
+    else:
+        import rnep_runtime
     torch.set_num_threads(4)
     engine = rnep_runtime.load(str(args.checkpoint), args.dataset, device=args.device,
                                amp=args.amp, iterations=args.iterations)
